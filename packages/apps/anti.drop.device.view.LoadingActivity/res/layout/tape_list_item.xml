@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#424451" >
+
+    <ImageView
+        android:id="@+id/tape_pauseimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="15.0dip"
+        android:src="@drawable/pause_play_icon" />
+
+    <LinearLayout
+        android:layout_toRightOf="@id/tape_pauseimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tape_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20150722_1059454.amr"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+
+        <TextView
+            android:id="@+id/tape_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015年07月22号 23:32:15"
+            android:textColor="#A7A8AD"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+    
+    <TextView
+            android:id="@+id/tape_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:10"
+            android:textColor="#A7A8AD"
+            android:textSize="16.0sp" 
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15.0dip"
+            android:layout_centerVertical="true"
+            />
+
+</RelativeLayout>

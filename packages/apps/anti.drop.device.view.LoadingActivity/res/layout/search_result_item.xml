@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/search_result_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="10.0dip"
+        android:paddingLeft="20.0dip"
+        android:paddingRight="20.0dip"
+        android:paddingTop="10.0dip"
+        android:src="@drawable/bluetooth_icon" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/search_result_item_image"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/search_result_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+
+        <TextView
+            android:id="@+id/search_result_item_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ADAFAC"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/search_result_connected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/connected_btn"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15.0dip"
+        />
+
+</RelativeLayout>

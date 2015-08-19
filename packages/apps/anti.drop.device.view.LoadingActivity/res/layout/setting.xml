@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title_layout" />
+
+    <RelativeLayout
+        android:id="@+id/goods_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15.0dip" 
+        android:background="@drawable/list_selector"
+        >
+
+        
+        <ImageView
+            android:id="@+id/name_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_icon"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            />
+        
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="名称"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+
+        <TextView
+            android:layout_toRightOf="@id/name_text"
+            android:layout_toLeftOf="@id/name_arrow"
+            android:id="@+id/goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ADAFAC"
+            android:textSize="18.0sp" 
+            android:gravity="center"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dip"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:background="#595B68" />
+
+    <RelativeLayout
+        android:id="@+id/bell_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15.0dip" 
+        android:background="@drawable/list_selector"
+        >
+        
+        <ImageView
+            android:id="@+id/bell_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_icon"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            />
+
+        <TextView
+            android:id="@+id/bell_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="报警铃声"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+
+        <TextView
+            android:layout_toRightOf="@id/bell_text"
+            android:layout_toLeftOf="@id/bell_arrow"
+            android:id="@+id/bell_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ADAFAC"
+             android:gravity="center"
+            android:textSize="18.0sp" 
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="marquee_forever" 
+            android:focusableInTouchMode="true" 
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            />
+       
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dip"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:background="#595B68" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10.0dip" >
+
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="报警声"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
+
+        <ToggleButton
+            android:id="@+id/call_bell_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:button="@drawable/toggle_btn_selector"
+            android:checked="true"
+            android:textOff=""
+            android:textOn="" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.6dip"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:background="#595B68" />
+
+    <Button
+        android:id="@+id/ignore_prelost_machine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30.0dip"
+        android:background="@color/blue"
+        android:padding="15.0dip"
+        android:text="忽略此防丢器"
+        android:textColor="@color/white"
+        android:textSize="18.0sp" />
+
+</LinearLayout>

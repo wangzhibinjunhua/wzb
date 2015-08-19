@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#424451"
+    >
+
+    <include
+        android:id="@+id/tape_title"
+        layout="@layout/title_layout" />
+
+    
+    <ImageView
+            android:id="@+id/tape_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="10.0dip"
+            android:src="@drawable/tape_icon" 
+            android:background="#0F9CE4"
+            android:layout_alignParentBottom="true"
+            />
+    
+    <ListView
+        android:id="@+id/tape_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tape_title"
+        android:layout_above="@id/tape_image"
+        android:scrollbars="none"
+        android:divider="#595B68"
+        android:dividerHeight="0.6dip"
+        android:visibility="gone"
+        ></ListView>
+    
+    <TextView
+            android:id="@+id/tape_tip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="当前没有录音"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16.0sp"
+            android:layout_below="@id/tape_title"
+            android:layout_above="@id/tape_image"
+            ></TextView>
+    
+
+</RelativeLayout>
