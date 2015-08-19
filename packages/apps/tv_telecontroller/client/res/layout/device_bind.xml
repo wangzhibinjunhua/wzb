@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+    
+    <include
+        layout="@layout/title_layout"
+        />
+    
+
+    <LinearLayout
+        android:id="@+id/detection_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/device_detection"
+            android:layout_width="match_parent"
+            android:layout_height="150.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="25.0dip"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="设备检测中..."
+            android:textColor="@color/title_text_color"
+            android:textSize="18.0sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bind_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="25.0dip"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/bind_device_ip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="MC:63:DT56:78:7D:66"
+                android:textColor="@color/title_text_color"
+                android:textSize="18.0sp" />
+
+            <TextView
+                android:id="@+id/bind_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/bind_device_ip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10.0dip"
+                android:text="检测到:沃豆小盒"
+                android:textColor="@color/title_text_color"
+                android:textSize="18.0sp" />
+
+            <TextView
+                android:id="@+id/bind_device_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bind_device_ip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dip"
+                android:text="是否将该设备绑定你的账号下"
+                android:textColor="@color/title_text_color"
+                android:textSize="18.0sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/confir_bind_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="20.0dip"
+            android:background="@drawable/button_selector"
+            android:gravity="center"
+            android:paddingBottom="10.0dip"
+            android:paddingTop="10.0dip"
+            android:text="确定"
+            android:textColor="@color/set_text_color"
+            android:textSize="18.0sp" />
+
+        <Button
+            android:id="@+id/cancel_bind_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="20.0dip"
+            android:background="@drawable/button_selector"
+            android:gravity="center"
+            android:paddingBottom="10.0dip"
+            android:paddingTop="10.0dip"
+            android:text="取消"
+            android:textColor="@color/set_text_color"
+            android:textSize="18.0sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/detection_failure_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="25.0dip"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/detection_failure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20.0dip"
+                android:drawableTop="@drawable/wifi_grag_icon"
+                android:gravity="center"
+                android:text="搜索失败"
+                android:textColor="@color/grag_555"
+                android:textSize="18.0sp" />
+
+            <TextView
+                android:id="@+id/tip_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detection_failure"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dip"
+                android:drawableLeft="@drawable/tip_image"
+                android:gravity="center"
+                android:text="请确保你的手机与设备均均已统"
+                android:textColor="@color/title_text_color"
+                android:textSize="14.0sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tip_text_1"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingBottom="20.0dip"
+                android:text="一连接无线网络后请重新点击重试"
+                android:textColor="@color/title_text_color"
+                android:textSize="14.0sp" />
+        </RelativeLayout>
+        
+        <Button
+            android:id="@+id/again_detection_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:background="@drawable/button_selector"
+            android:gravity="center"
+            android:paddingBottom="10.0dip"
+            android:paddingTop="10.0dip"
+            android:text="重新检测"
+            android:textColor="@color/set_text_color"
+            android:textSize="18.0sp" 
+            android:layout_marginTop="20.0dip"
+            />
+
+        <Button
+            android:id="@+id/connection_wifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="20.0dip"
+            android:background="@drawable/button_selector"
+            android:gravity="center"
+            android:paddingBottom="10.0dip"
+            android:paddingTop="10.0dip"
+            android:text="连接无线网络"
+            android:textColor="@color/set_text_color"
+            android:textSize="18.0sp" />
+        
+    </LinearLayout>
+
+</LinearLayout>

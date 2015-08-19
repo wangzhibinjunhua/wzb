@@ -1,0 +1,47 @@
+<resources>
+
+    <string name="app_name">TVTelecontroller</string>
+    <string name="first_page">首页</string>
+    <string name="av">影音</string>
+    <string name="game">游戏</string>
+    <string name="bean">沃豆</string>
+    <string name="change">变更</string>
+    <string name="handle">手　柄</string>
+    <string name="controller">遥控器</string>
+    <string name="scanning">扫一扫</string>
+    <string name="connection">连接</string>
+    <string name="no_device_connection">当前没有连接设备</string>
+    <string name="input_ip">请输入连接ip地址</string>
+    <string name="mouse_mode">滑行模式</string>
+    <string name="keyboard_mode">经典模式</string>
+    <string name="num_1">　1　</string>
+    <string name="num_2">　2　</string>
+    <string name="num_3">　3　</string>
+    <string name="num_4">　4　</string>
+    <string name="num_5">　5　</string>
+    <string name="num_6">　6　</string>
+    <string name="num_7">　7　</string>
+    <string name="num_8">　8　</string>
+    <string name="num_9">　9　</string>
+    <string name="num_0">　0　</string>
+    <string name="home">HOME</string>
+    <string name="meun">MEUN</string>
+    <string name="ok_key">OK</string>
+    <string name="select">SELECT</string>
+    <string name="start">START</string>
+    <string name="exit_handle_mode">退出手柄模式</string>
+    <string name="x_key">　X　</string>
+    <string name="y_key">　Y　</string>
+    <string name="a_key">　A　</string>
+    <string name="b_key">　B　</string>
+    <string name="click_connection">点击扫描周围设备</string>
+    <string name="wodou_box">沃豆小盒</string>
+    <string name="device_name">设备名称：</string>
+    <string name="ip_address">IP地址：</string>
+    <string name="curr_condition">当前状况：</string>
+    <string name="immediately_connnection">立即连接</string>
+    <string name="scan_device">扫描设备</string>
+    <string name="back">返回</string>
+    <string name="click_search">点击搜索</string>
+    
+</resources>

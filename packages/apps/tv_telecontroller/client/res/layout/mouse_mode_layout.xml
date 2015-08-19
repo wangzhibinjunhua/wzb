@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/mouse_keys_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/handle_meun_bg"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/mouse_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="10.0dip"
+            android:src="@drawable/classic_home_icon_selector" />
+
+        <ImageView
+            android:id="@+id/mouse_meun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="10.0dip"
+            android:src="@drawable/classic_meun_icon_selector" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/mouse_meun"
+            android:layout_toRightOf="@id/mouse_home"
+            android:background="@drawable/round_corners_grag_bg" >
+
+            <ImageView
+                android:id="@+id/mouse_vol_reduction"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/vol_redu_icon_selector" 
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/mouse_padding"
+                android:paddingBottom="@dimen/mouse_padding"
+                />
+
+            <ImageView
+                android:id="@+id/mouse_vol_mute"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/vol_mute_icon_selector" 
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/mouse_padding"
+                android:paddingBottom="@dimen/mouse_padding"
+                />
+
+            <ImageView
+                android:id="@+id/mouse_vol_add"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/vol_add_icon_selector" 
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/mouse_padding"
+                android:paddingBottom="@dimen/mouse_padding"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <Button
+        android:id="@+id/touch_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/mouse_keys_layout"
+        android:background="#eeeeee" 
+        android:text="触屏板"
+        android:textColor="@color/grag_555"
+        />
+    
+
+</RelativeLayout>

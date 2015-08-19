@@ -1,0 +1,8 @@
+1.RemoteServer为开机自启动线程
+用来接收客户端发过来的数据
+2.客户端发的数据统一用float a[7] 格式来发送
+	a[0]=keycode;a[1]=mouseX;a[2]=mouseY;a[3]=mouseFlag;a[4]-a[6]为gsensor数据
+	在handle_event函数中解析数据 
+a[0] 为单个按键的键值（比如home back 上下左右确定键）
+a[1],a[2]为鼠标的x，y坐标；a[3]为鼠标状态
+a[4]-a[6]为预留的gsensor数据接口（gsensor的获取到的数据为x，y，z）

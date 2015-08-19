@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#dddddd"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/meun_handle"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/handle_icon"
+        android:gravity="center"
+        android:text="手柄" 
+        android:paddingTop="10.0dip"
+        android:paddingBottom="10.0dip"
+        />
+
+    <TextView
+        android:id="@+id/meun_controlle"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/controlle_icon"
+        android:gravity="center"
+        android:text="遥控器" 
+        android:paddingTop="10.0dip"
+        android:paddingBottom="10.0dip"
+        />
+
+    <TextView
+        android:id="@+id/meun_flicking"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/flicking_icon"
+        android:gravity="center"
+        android:text="扫一扫" 
+        android:paddingTop="10.0dip"
+        android:paddingBottom="10.0dip"
+        />
+
+    <TextView
+        android:id="@+id/meun_doubox"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/wobox_icon"
+        android:gravity="center"
+        android:text="豆盒" 
+        android:paddingTop="10.0dip"
+        android:paddingBottom="10.0dip"
+        />
+
+    <TextView
+        android:id="@+id/meun_search"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2.0dip"
+        android:layout_marginTop="5.0dip"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/search_icon"
+        android:gravity="center"
+        android:text="搜索" 
+        android:paddingTop="10.0dip"
+        android:paddingBottom="10.0dip"
+        />
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <dimen name="radio_padding">10.0dip</dimen>
+    <dimen name="title_height">45.0dip</dimen>
+    <dimen name="title_back_padding_left_right">10.0dip</dimen>
+    <dimen name="handle_height_width">180.0dip</dimen>
+    <dimen name="classic_margin_top">4.0dip</dimen>
+    <dimen name="mouse_padding">1.0dip</dimen>
+    
+</resources>

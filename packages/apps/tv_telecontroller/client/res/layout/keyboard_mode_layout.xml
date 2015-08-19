@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/classic_mode_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/classic_margin_top">
+
+        <ImageView
+            android:id="@+id/num_1"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_1_selector" />
+
+        <ImageView
+            android:id="@+id/num_2"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_2_selector" />
+
+        <ImageView
+            android:id="@+id/num_3"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_3_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/classic_margin_top">
+
+        <ImageView
+            android:id="@+id/num_4"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_4_selector" />
+
+        <ImageView
+            android:id="@+id/num_5"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_5_selector" />
+
+        <ImageView
+            android:id="@+id/num_6"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_6_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/classic_margin_top">
+
+        <ImageView
+            android:id="@+id/num_7"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_7_selector" />
+
+        <ImageView
+            android:id="@+id/num_8"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_8_selector" />
+
+        <ImageView
+            android:id="@+id/num_9"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_9_selector" />
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/classic_margin_top">
+
+        <ImageView
+            android:id="@+id/num_home"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/classic_home_icon_selector" />
+
+       <ImageView
+            android:id="@+id/num_0"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/num_0_selector" />
+
+        <ImageView
+            android:id="@+id/num_meun"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/back_icom_normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/classic_margin_top">
+
+        <ImageView
+            android:id="@+id/vol_keyb_red"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/keyboard_vol_redu_icon_selector" />
+
+        <ImageView
+            android:id="@+id/vol_keyb_mute"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/keyboard_vol_mute_icon_selector" />
+
+        <ImageView
+            android:id="@+id/vol_keyb_add"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/keyboard_vol_add_icon_selector" />
+    </LinearLayout>
+    
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/classic_margin_top"
+        >
+        
+        <ImageView
+            android:id="@+id/up_keyb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/up_icon_selector" 
+            android:padding="5.0dip"
+            android:layout_marginBottom="5.0dip"
+            />
+        
+        <ImageView
+            android:id="@+id/ok_keyb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/up_keyb"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5.0dip"
+            android:src="@drawable/keyboard_ok_icon_selector"
+            android:gravity="center"
+            />
+        
+        <ImageView
+            android:id="@+id/below_keyb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ok_keyb"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:src="@drawable/below_icon_selector" 
+            android:padding="5.0dip"
+            android:layout_marginTop="5.0dip"
+            />
+        
+        <ImageView
+            android:id="@+id/left_keyb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="15.0dip"
+            android:layout_toLeftOf="@id/ok_keyb"
+            android:gravity="center"
+            android:src="@drawable/left_icon_selector" 
+            android:padding="5.0dip"
+            />
+        
+        <ImageView
+            android:id="@+id/right_keyb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="15.0dip"
+            android:layout_toRightOf="@id/ok_keyb"
+            android:gravity="center"
+            android:src="@drawable/right_icon_selector" 
+            android:padding="5.0dip"
+            />
+        
+        </RelativeLayout>
+    
+
+</LinearLayout>
