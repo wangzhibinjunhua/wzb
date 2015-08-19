@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.updateservice"
+    android:sharedUserId="android.uid.system"
+     >
+   <uses-permission android:name="android.permission.ACCESS_ALL_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.SHUTDOWN" />
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>	    
+	<uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>	  
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.RECEIVE_DOWNLOAD_COMPLETE" /> 
+    <uses-permission android:name="READ_PHONE_STATE" /> 
+	
+    <uses-permission android:name="android.permission.REBOOT"/>
+ 
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
+
+    <uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" />
+
+
+    
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".UpdateService"
+            android:label="@string/app_name" >
+            <intent-filter>
+            	<category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                
+            </intent-filter>
+        </activity>
+        <activity android:name=".ReceiverProc"
+             	  android:theme="@style/Theme.FloatActivity"
+                  android:label="ReceiverProc">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>        
+		<receiver android:name="UpdateReceiver">
+        	<intent-filter>
+        		<action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+        	</intent-filter>
+    	</receiver>                
+    </application>
+
+</manifest>

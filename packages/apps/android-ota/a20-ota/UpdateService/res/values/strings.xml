@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, SystemUpdate!</string>
+    <string name="app_name">SystemUpdate</string>
+    <string name="BtnYes">OK</string>
+    <string name="BtnNo">No</string>
+    <string name="BtnCancel">Cancel</string>
+    <string name="BtnOk">OK</string> 
+    <string name="update">System Update</string>
+    <string name="otatitle">System Update</string>
+    <string name="otamessage">Download the update file and update system?</string>
+    <string name="otamessage_sdcard">Notice! system will update and reboot</string>
+    <string name="bartitle">system update</string>
+    <string name="barmessage">copy update file to system device</string>
+    <string name="nofiletitle">error</string>
+    <string name="nofile">no update file available</string>
+    <string name="BtnOta">Check Now</string>
+    <string name="strtest">suzhiguo</string>
+    <string name="firmware">firmware</string> 
+    <string name="hwmodel">model</string>
+    
+    <string name="check_network">check network</string>
+    <string name="check_sdcard">check sdcard</string>
+    <string name="connect_error">No Network available</string>
+    
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="wifi_settings">Wi-FI settings</string>
+    
+    <string name="softupdate_title">Softwate update</string>
+    <string name="softupdate_content">Check for software updates and download new updates?  You will be able to use your device during download</string>
+
+    <string name="connecting">Connecting to server...</string>
+    
+    <string name="no_update_available">No update available</string>
+     <string name="update_message">now system update!</string>
+
+    
+</resources>

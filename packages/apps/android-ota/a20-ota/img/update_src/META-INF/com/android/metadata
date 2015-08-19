@@ -1,0 +1,3 @@
+post-build=sc/crane_dlyx/crane-dlyx:4.2.2/JDQ39/20130329:eng/test-keys
+post-timestamp=1364545615
+pre-device=crane-dlyx

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="600dp"
+    android:layout_height="600dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical" 
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/update"
+        android:layout_centerHorizontal="true"
+        android:textSize="30.0sp" />
+    <!--
+        <Button
+        android:id="@+id/ota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"      
+        android:layout_below="@id/update"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="50.0sp"
+        android:text="@string/BtnOta" />
+
+    -->
+
+    <Button
+        android:id="@+id/check_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="130dp"
+        android:layout_marginRight="158dp"
+        android:text="@string/check_network"
+        android:textSize="30.0sp" />
+
+    <Button
+        android:id="@+id/check_sdcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/check_network"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/check_network"
+        android:layout_marginBottom="47dp"
+        android:text="@string/check_sdcard"
+        android:textSize="30.0sp" />
+
+</RelativeLayout>

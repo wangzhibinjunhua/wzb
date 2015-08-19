@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical"
+    android:layout_width="600dp"
+    android:layout_height="600dp"  
+     >
+<!--    
+  	<TextView
+        android:id="@+id/namemassage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+    	android:layout_marginTop="30dip"          
+        android:text="@string/update" />
+     <LinearLayout
+          	android:id="@+id/buttonLayout"          	
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_below="@id/namemassage"
+        	android:layout_marginTop="30dip"
+        	android:layout_centerHorizontal="true"
+        	android:layout_gravity="center_horizontal" >
+	     <Button
+	        android:id="@+id/okButton"
+	        android:layout_width="120dp"
+	        android:layout_height="wrap_content"  
+	        android:textSize="30sp" 
+	        android:layout_marginLeft="20dip"
+	        android:layout_centerHorizontal="true"   
+	        android:text="@string/BtnYes" />    
+	     <Button
+	        android:id="@+id/cancelButton"
+	        android:layout_width="120dp"
+	        android:layout_height="wrap_content" 
+	        android:textSize="30sp"
+	        android:layout_marginLeft="60dip"	        
+	        android:layout_marginRight="20dip"   
+	        android:layout_centerHorizontal="true"   
+	        android:text="@string/BtnCancel" />  
+	  </LinearLayout>
+-->
+</RelativeLayout>

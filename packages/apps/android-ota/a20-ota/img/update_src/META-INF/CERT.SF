@@ -1,0 +1,22 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android SignApk)
+SHA1-Digest-Manifest: f2t24/Ga5bv4GUcXaCz5K1rsCiA=
+
+Name: recovery/etc/install-recovery.sh
+SHA1-Digest: VbJzN5nRXj5Ck+TsXtLsXpPCHcc=
+
+Name: recovery/recovery-from-boot.p
+SHA1-Digest: BdamjBOpRxbjvavg/JUrgZOEMds=
+
+Name: META-INF/com/google/android/updater-script
+SHA1-Digest: gBXFWQkSbQLnXPFYRmO+q1RY2Jk=
+
+Name: system/framework/framework.jar
+SHA1-Digest: uJ8WSdqwIMwJzGxXuGSggLj/w7U=
+
+Name: META-INF/com/google/android/update-binary
+SHA1-Digest: Qm9YJYXTOJrFXiXOY/oQemPMvIc=
+
+Name: daliyuxin
+SHA1-Digest: GdezGgvemdBOBxyPo55w8Nq4ulo=
+
