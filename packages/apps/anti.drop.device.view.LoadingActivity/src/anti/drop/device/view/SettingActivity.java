@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -85,16 +84,13 @@ public class SettingActivity extends BaseActivity implements OnCheckedChangeList
 		mDB.open();
 		deviceData = mDB.query();
 		setListener();
-		
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d("wzb",""+SharedPreferencesUtils.getInstanse(this).getMusicName());
 		bellName.setText(SharedPreferencesUtils.getInstanse(this).getMusicName());
-		//goodsName.setText(SharedPreferencesUtils.getInstanse(this).getDeviceName());
-		goodsName.setText(SharedPreferencesUtils.getInstanse(this).get_modify_name());
+		goodsName.setText(SharedPreferencesUtils.getInstanse(this).getDeviceName());
 	}
 
 	@Override

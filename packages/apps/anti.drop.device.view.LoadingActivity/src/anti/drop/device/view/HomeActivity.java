@@ -5,14 +5,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +35,11 @@ import anti.drop.device.utils.SlideDeleteListView.DelButtonClickListener;
 @SuppressLint("ShowToast")
 public class HomeActivity extends BaseActivity implements DelButtonClickListener{
 
-	private static final int REQUEST_ENABLE_BT = 2;
+	private final int CONNECTED_LISTENER = 0x000010;
+	private final int DISCONNECTED_LISTENER = 0x000011;
+	private final int CONNECTED_ALL = 0x000012;
+	private final int REFRESH = 0x000013;
+	private final int REQUEST_ENABLE_BT = 2;
 
 	private ImageView backView;
 	private TextView titleView;
@@ -54,18 +57,68 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 	
 	private long firstTime = 0;
 	private Intent mIntent = null;
-	private boolean flag = false;
-	private int mRssi = 0;
-	private Thread mRssiThread;
 	static String state_addr;
-
+	private int connecNum = 0;//最大连接数不能超过4个
+	
+	private Handler mHandler = new Handler(){
+		public void handleMessage(android.os.Message msg){
+			switch(msg.what){
+			case CONNECTED_LISTENER:
+				if(null!=mDBData&&mDBData.size()>0){
+					for(int i=0;i<mDBData.size();i++){
+						if(mDBData.get(i).getAddress().equals(state_addr)){
+							mDBHelper.alter(mDBData.get(i), BluetoothDevice.BOND_BONDED);
+						}
+					}
+					mDBData = mDBHelper.query();
+					mAdapter.setDeveiceData(mDBData);
+					mAdapter.notifyDataSetChanged();
+				}
+				break;
+			case DISCONNECTED_LISTENER:
+				if(null!=mDBData&&mDBData.size()>0){
+					for(int i=0;i<mDBData.size();i++){
+						if(mDBData.get(i).getAddress().equals(state_addr)){
+							mDBHelper.alter(mDBData.get(i), 0x00000a);
+						}
+					}
+					mDBData = mDBHelper.query();
+					mAdapter.setDeveiceData(mDBData);
+					mAdapter.notifyDataSetChanged();
+				}
+				break;
+			case CONNECTED_ALL:
+				//进入应用，连接数据库中所有设备,当连接数量大于4时，停止连接.
+				if(mDBData!=null&&mDBData.size()>0){
+					for(int i=0;i<mDBData.size();i++){
+						if(connecNum<4){
+							boolean issuccess = mBLE.connect(mDBData.get(i).getAddress());
+							if(issuccess){
+								connecNum++;
+								mDBHelper.alter(mDBData.get(i), BluetoothDevice.BOND_BONDED);
+							}
+						}
+					}
+					mDBData = mDBHelper.query();
+					mAdapter.setDeveiceData(mDBData);	
+					mAdapter.notifyDataSetChanged();
+				}
+				break;
+			case REFRESH:
+				mDBData = mDBHelper.query();
+				mAdapter.setDeveiceData(mDBData);
+				mAdapter.notifyDataSetChanged();
+				break;
+			}
+		};
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_page);
 		initView();
-		initData();
 	}
 	
 	private void findViewById() {
@@ -81,14 +134,8 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 		findViewById();
 		backView.setVisibility(View.GONE);
 		titleView.setText("防丢小助手");
-		mDBHelper = DBHelper.getInstance(this);
 		bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
-		// 一进入应用，判断该设备是否支持对蓝牙BLE的支持
-		boolean isSupport = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-		if (!isSupport) {
-			Toast.makeText(this, "当前设备不支持最新蓝牙4.0技术", 1000);
-		}
 		// 蓝牙是否开启
 		if (null == mBluetoothAdapter || !mBluetoothAdapter.isEnabled()) {
 			Intent enableIntent = new Intent(
@@ -100,68 +147,19 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 		if (!mBLE.initialize()) {
 			finish();
 		}
+		mDBHelper = DBHelper.getInstance(this);
+		mDBHelper.open();
+		mDBData = mDBHelper.query();
+		mAdapter = new HomeListAdapter(this, mDBData);
+		deviceList.setAdapter(mAdapter);
+		mHandler.sendEmptyMessage(CONNECTED_ALL);
 		setListener();
 	}
 	
 	@Override
 	protected void onResume() {
-		initData_new();
 		super.onResume();
-		mAdapter.notifyDataSetChanged();
-	}
-	
-	private void initData(){
-		mDBHelper.open();
-		
-		mDBData = mDBHelper.query();
-		mAdapter = new HomeListAdapter(this, mDBData);
-		deviceList.setAdapter(mAdapter);
-		
-		if(null!=mDBData&&mDBData.size()>0){
-			for(int i=0;i<mDBData.size();i++){
-				boolean isconnected = mBLE.connect(mDBData.get(i).getAddress());
-				if(isconnected){
-					mDBHelper.alter(mDBData.get(i), 0x00000c);
-				}
-				
-				mDBData = mDBHelper.query();
-				mAdapter.setDeveiceData(mDBData);
-				mAdapter.notifyDataSetChanged();
-			}
-		}
-		
-		
-		flag = true;
-		mRssiThread = new Thread(rssiThread);
-		mRssiThread.start();
-		
-	}
-	
-	private void initData_new(){
-		mDBHelper.open();
-		
-		mDBData = mDBHelper.query();
-		mAdapter = new HomeListAdapter(this, mDBData);
-		deviceList.setAdapter(mAdapter);
-		
-		if(null!=mDBData&&mDBData.size()>0){
-			for(int i=0;i<mDBData.size();i++){
-//				boolean isconnected = mBLE.connect(mDBData.get(i).getAddress());
-//				if(isconnected){
-//					mDBHelper.alter(mDBData.get(i), 0x00000c);
-//				}
-				
-				mDBData = mDBHelper.query();
-				mAdapter.setDeveiceData(mDBData);
-				mAdapter.notifyDataSetChanged();
-			}
-		}
-		
-		
-		flag = true;
-		mRssiThread = new Thread(rssiThread);
-		mRssiThread.start();
-		
+		mHandler.sendEmptyMessage(REFRESH);
 	}
 	
 	private void setListener() {
@@ -179,10 +177,9 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				SharedPreferencesUtils.getInstanse(HomeActivity.this)
-				.setAddress(mDBData.get(arg2).getAddress());
-				SharedPreferencesUtils.getInstanse(HomeActivity.this)
-				.setBellName(mDBData.get(arg2).getName());
+				SharedPreferencesUtils.getInstanse(HomeActivity.this).setAddress(mDBData.get(arg2).getAddress());
+				SharedPreferencesUtils.getInstanse(HomeActivity.this).setDeviceName(mDBData.get(arg2).getName());
+				SharedPreferencesUtils.getInstanse(HomeActivity.this).setMusicName(mDBData.get(arg2).getBell());
 				Intent intent = new Intent(HomeActivity.this,DetailActivity.class);
 				startActivity(intent);
 			}
@@ -198,15 +195,11 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 	@Override
 	protected void onPause() {
 		super.onPause();
-		flag = false;
-		mRssiThread = null;
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		flag = false;
-		mRssiThread = null;
 	}
 
 	@Override
@@ -243,26 +236,28 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 	private void clearData() {
 		if (mDBData != null && mDBData.size() > 0) {
 			for (int i = 0; i < mDBData.size(); i++) {
-				mDBHelper.alter(mDBData.get(i), 0x0000000a);
+				mDBHelper.alter(mDBData.get(i), BluetoothDevice.BOND_NONE);
 			}
 		}
 	}
 
 	@Override
 	public void clickHappend(int position) {
-		mDBHelper.deleteDevice(mDBData.get(position));
-		//刷新列表
-		mAdapter.setDeveiceData(mDBData);
-		mAdapter.notifyDataSetChanged();
+		if(position<mDBData.size()){
+			mDBHelper.deleteDevice(mDBData.get(position));
+			mDBData = mDBHelper.query();
+			mAdapter.setDeveiceData(mDBData);
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 	
 	private BluetoothLeClass.OnConnectListener mConnectListener = new BluetoothLeClass.OnConnectListener() {
 		
 		@Override
 		public void onConnect(BluetoothGatt gatt,String addr) {
-				Log.d("wzb","1111111111 connect");
 				state_addr=addr;
-				mHandler.sendEmptyMessage(8888);
+				mHandler.sendEmptyMessage(CONNECTED_LISTENER);
+				connecNum++;
 		}
 	};
 	
@@ -270,71 +265,10 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 		
 		@Override
 		public void onDisconnect(BluetoothGatt gatt,String addr) {
-			Log.d("wzb","222222222 disconnect");
 			state_addr=addr;
-			mHandler.sendEmptyMessage(7777);
-			
+			mHandler.sendEmptyMessage(DISCONNECTED_LISTENER);
+			connecNum--;
 		}
-	};
-	
-	
-	
-	private Thread rssiThread = new Thread(){
-		public void run() {
-			while(flag){
-				try {
-					sleep(2000);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				if(mBLE.getRssiVal()){
-					mRssi=BluetoothLeClass.getBLERSSI();
-					if (mDBData != null && mDBData.size() > 0) {
-						for (int i = 0; i < mDBData.size(); i++) {
-							mDBHelper.alter2(mDBData.get(i),mRssi);
-							mHandler.sendEmptyMessage(2222);
-						}
-					}
-				}
-			}
-		};
-	};
-	
-	private Handler mHandler = new Handler(){
-		public void handleMessage(android.os.Message msg){
-			switch(msg.what){
-			case 2222:
-				mDBData = mDBHelper.query();
-				mAdapter.setDeveiceData(mDBData);
-				mAdapter.notifyDataSetChanged();
-				break;
-			case 7777:
-				if(null!=mDBData&&mDBData.size()>0){
-					for(int i=0;i<mDBData.size();i++){
-						if(mDBData.get(i).getAddress().equals(state_addr)){
-							mDBHelper.alter(mDBData.get(i), 0x00000a);
-						mDBData = mDBHelper.query();
-						mAdapter.setDeveiceData(mDBData);
-						mAdapter.notifyDataSetChanged();
-						}
-					}
-				}
-				break;
-			case 8888:
-				if(null!=mDBData&&mDBData.size()>0){
-					for(int i=0;i<mDBData.size();i++){
-						if(mDBData.get(i).getAddress().equals(state_addr)){
-							mDBHelper.alter(mDBData.get(i), 0x00000c);
-						mDBData = mDBHelper.query();
-						mAdapter.setDeveiceData(mDBData);
-						mAdapter.notifyDataSetChanged();
-						}
-					}
-				}
-				break;
-				
-			}
-		};
 	};
 
 }

@@ -3,6 +3,7 @@ package anti.drop.device.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,18 +68,12 @@ public class ModifyActivity extends BaseActivity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				
-//				SharedPreferencesUtils.getInstanse(ModifyActivity.this)
-//				.setDeviceName(listData.get(arg2));
-				SharedPreferencesUtils.getInstanse(ModifyActivity.this)
-				.setDeviceNamefromAddr(SharedPreferencesUtils.getInstanse(ModifyActivity.this).getAddress(),listData.get(arg2));
-				//同步将该设备名称与设备绑定并记录下来。
+				
+				String address = SharedPreferencesUtils.getInstanse(ModifyActivity.this).getAddress();
 				DeviceBean device = new DeviceBean();
-				device.address = SharedPreferencesUtils.getInstanse(ModifyActivity.this).getAddress();
-				device.name = listData.get(arg2);
-				device.status = 0x00000c;
-				mDBHelper.alter(device, 0x00000c);
-				Log.d("wzb","222222rrr"+listData.get(arg2));
-				SharedPreferencesUtils.getInstanse(ModifyActivity.this).set_modify_name(listData.get(arg2));
+				device.address = address;
+				mDBHelper.alter(device, "name",listData.get(arg2));
+				SharedPreferencesUtils.getInstanse(ModifyActivity.this).setDeviceName(listData.get(arg2));
 				finish();
 			}
 		});

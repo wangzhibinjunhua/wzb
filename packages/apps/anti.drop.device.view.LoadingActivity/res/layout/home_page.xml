@@ -3,48 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    
-    <include
-        layout="@layout/title_layout"
-        />
-    
+
+    <include layout="@layout/title_layout" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/dark_grey"
-        >
-        
-        
-        <ImageView
-            android:id="@+id/home_page_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="0.0dip"
+        android:orientation="vertical" >
+
+        <RelativeLayout
             android:layout_weight="1"
-            android:src="@drawable/search_icon_selector"
-            android:contentDescription="@string/app_name"
-            android:layout_gravity="center"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="0.0dip"
+            android:background="@color/dark_grey"
+            >
+            
+            <ImageView
+                android:id="@+id/home_page_search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/search_icon_selector" />
+            
+        </RelativeLayout>
         
+       
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.6dip"
-            android:background="@color/divider"
-            />
-        
+            android:background="@color/divider" />
+
         <anti.drop.device.utils.SlideDeleteListView
             android:id="@+id/home_page_device_list"
             android:layout_width="match_parent"
             android:layout_height="0.0dip"
             android:layout_weight="1"
-            android:scrollbars="none"
             android:divider="@color/divider"
             android:dividerHeight="0.6dip"
             android:listSelector="@drawable/list_selector"
-            ></anti.drop.device.utils.SlideDeleteListView>
-        
+            android:scrollbars="none" >
+        </anti.drop.device.utils.SlideDeleteListView>
     </LinearLayout>
-    
 
 </LinearLayout>

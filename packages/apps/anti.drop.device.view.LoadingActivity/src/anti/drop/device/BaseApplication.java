@@ -6,7 +6,9 @@ import java.util.Properties;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 import anti.drop.device.utils.BluetoothLeClass;
 import anti.drop.device.utils.LocationUtil;
 import anti.drop.device.utils.SharedPreferencesUtils;
@@ -39,17 +41,18 @@ public class BaseApplication extends Application{
 	
 	private void init() {
 		loadConfigFile();//加载配置文件
-		ble=new BluetoothLeClass(mContext);
-		if(!ble.initialize()){
-			Log.d("wzb","ble init error");
+		// 一进入应用，判断该设备是否支持对蓝牙BLE的支持
+		boolean isSupport = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+		if (isSupport) {
+			ble=new BluetoothLeClass(mContext);
+			LocationUtil location = new LocationUtil(this);
+			double lati = location.getmLatitude()+0.00256;
+			double longi = location.getmLongitude()+0.00256;
+			SharedPreferencesUtils.getInstanse(this).setDeviceLatitude(String.valueOf(lati));
+			SharedPreferencesUtils.getInstanse(this).setDeviceLongitude(String.valueOf(longi));
+		}else{
+			Toast.makeText(this, "当前设备不支持最新蓝牙4.0技术", 1000);
 		}
-		
-		LocationUtil location = new LocationUtil(this);
-		double lati = location.getmLatitude()+0.00256;
-		double longi = location.getmLongitude()+0.00256;
-		SharedPreferencesUtils.getInstanse(this).setDeviceLatitude(String.valueOf(lati));
-		SharedPreferencesUtils.getInstanse(this).setDeviceLongitude(String.valueOf(longi));
-		
 	}
 	
 	public void set_ble(BluetoothLeClass b){
@@ -65,8 +68,7 @@ public class BaseApplication extends Application{
 	private void loadConfigFile() {
 		mProperties = new Properties();
 		try {
-			InputStream input = BaseApplication.this.getAssets().open(
-					"configuration.properties");
+			InputStream input = BaseApplication.this.getAssets().open("configuration.properties");
 			mProperties.load(input);
 		} catch (IOException e) {
 			e.printStackTrace();

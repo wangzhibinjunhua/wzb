@@ -16,7 +16,6 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
-import anti.drop.device.BaseApplication;
 import anti.drop.device.R;
 
 /**
@@ -24,13 +23,14 @@ import anti.drop.device.R;
  */
 public class BluetoothLeClass {
 
-	private final static String TAG = "wzb";
+	private final String TAG = "wzb";
+	private final int PLAY_BELL = 0x000010;
 
 	private BluetoothManager mBluetoothManager;
 	private BluetoothAdapter mBluetoothAdapter;
 	private String mBluetoothDeviceAddress;
 	private BluetoothGatt mBluetoothGatt;
-	public static boolean isconnectedSuccess = true;
+	public boolean isconnectedSuccess = false;
 
 	private BluetoothGattCharacteristic ff[] = new BluetoothGattCharacteristic[7];
 
@@ -112,13 +112,16 @@ public class BluetoothLeClass {
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				if (mOnConnectListener != null)
 					mOnConnectListener.onConnect(gatt,address);
+				isconnectedSuccess = true;
 				Log.i(TAG, "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
 				Log.i(TAG, "Attempting to start service discovery:"
 						+ mBluetoothGatt.discoverServices());
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+				ring();//连接断开报警
 				if (mOnDisconnectListener != null)
 					mOnDisconnectListener.onDisconnect(gatt,address);
+				isconnectedSuccess = false;
 				Log.i(TAG, "Disconnected from GATT server.");
 				 
 				// isconnectedSuccess=false;
@@ -128,10 +131,9 @@ public class BluetoothLeClass {
                           mBluetoothGatt.disconnect();
                           mBluetoothGatt = null;
 					  }
-				 //while(!isconnectedSuccess){
-				 //isconnectedSuccess = connect(address);
-				 //}
 				 }
+			}else{
+				ring();//连接断开报警
 			}
 		}
 
@@ -184,7 +186,7 @@ public class BluetoothLeClass {
 			boolean isEqust = (result.equals("b1")||result.equals("b2"));
 			Log.d("wzb","isEnter="+isEnter+"isEqust= "+isEqust);
 			if(!isEnter&&isEqust){
-				mHandler.sendEmptyMessage(11);
+				mHandler.sendEmptyMessage(PLAY_BELL);
 			}
 		}
 
@@ -221,7 +223,7 @@ public class BluetoothLeClass {
 	Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 11:
+			case PLAY_BELL:
 				ring();
 				break;
 			default:
@@ -235,8 +237,7 @@ public class BluetoothLeClass {
 		if(player!=null&&player.isPlaying()){
 			player.stop();
 		}
-		Context mContext = BaseApplication.mContext;
-		String name = SharedPreferencesUtils.getInstanse(mContext).getBellName();
+		String name = SharedPreferencesUtils.getInstanse(mContext).getMusicName();
 		if(name.equals("铃声1")){
 			player = MediaPlayer.create(mContext, R.raw.bell_1);
 		}else if(name.equals("铃声2")){
@@ -247,7 +248,6 @@ public class BluetoothLeClass {
 			player = MediaPlayer.create(mContext, R.raw.bell_1);
 		}
 		player.start();
-		Log.d("wzb","ring======");
 	}
 	
 	/**
@@ -293,7 +293,7 @@ public class BluetoothLeClass {
 		if (mBluetoothAdapter == null || address == null) {
 			Log.w(TAG,
 					"BluetoothAdapter not initialized or unspecified address.");
-			return false;
+			isconnectedSuccess = false;
 		}
 
 		// Previously connected device. Try to reconnect.
@@ -303,9 +303,9 @@ public class BluetoothLeClass {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
 			if (mBluetoothGatt.connect()) {
-				return true;
+				isconnectedSuccess = true;
 			} else {
-				return false;
+				isconnectedSuccess = false;
 			}
 		}
 
@@ -313,7 +313,7 @@ public class BluetoothLeClass {
 				.getRemoteDevice(address);
 		if (device == null) {
 			Log.w(TAG, "Device not found.  Unable to connect.");
-			return false;
+			isconnectedSuccess = false;
 		}
 		// We want to directly connect to the device, so we are setting the
 		// autoConnect
@@ -321,7 +321,7 @@ public class BluetoothLeClass {
 		mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
 		Log.d(TAG, "Trying to create a new connection.");
 		mBluetoothDeviceAddress = address;
-		return true;
+		return isconnectedSuccess;
 	}
 
 	public BluetoothGatt getBluetoothGatt() {
@@ -385,19 +385,14 @@ public class BluetoothLeClass {
 			Log.w(TAG, "BluetoothAdapter not initialized");
 			return false;
 		}
-		// mBluetoothGatt.setCharacteristicNotification(characteristic,
-		// enabled);
-
+		
 		if (!mBluetoothGatt.setCharacteristicNotification(characteristic,
 				enabled)) {
-			Log.d("wzb", "111111111");
 			return false;
 		}
-		BluetoothGattDescriptor clientConfig = characteristic
-				.getDescriptor(UUID
-						.fromString("00002902-0000-1000-8000-00805f9b34fb"));
+		BluetoothGattDescriptor clientConfig = characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"));
 		if (clientConfig == null) {
-			Log.d("wzb", "2222222222");
+			
 			return false;
 		}
 		if (enabled) {
@@ -407,12 +402,13 @@ public class BluetoothLeClass {
 			clientConfig
 					.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
 		}
-		Log.d("wzb", "3333");
 		return mBluetoothGatt.writeDescriptor(clientConfig);
 	}
 
 	public void writeCharacteristic(BluetoothGattCharacteristic characteristic) {
-		mBluetoothGatt.writeCharacteristic(characteristic);
+		if(mBluetoothGatt!=null){
+			mBluetoothGatt.writeCharacteristic(characteristic);
+		}
 	}
 
 	/**

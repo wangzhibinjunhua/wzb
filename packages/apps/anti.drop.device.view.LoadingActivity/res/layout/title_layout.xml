@@ -23,6 +23,7 @@
         android:textColor="@color/white"
         android:textSize="18.0sp" 
         android:padding="15.0dip"
+        android:text="搜索结果"
         />
 
     <TextView
@@ -36,5 +37,16 @@
         android:textSize="16.0sp"
         android:padding="5.0dip"
         />
-
+    
+    <ProgressBar
+        android:id="@+id/title_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10.0dip"
+        android:layout_toLeftOf="@id/title_right_text"
+        android:visibility="gone" 
+        style="?android:attr/progressBarStyleSmall" 
+        />
+    
 </RelativeLayout>

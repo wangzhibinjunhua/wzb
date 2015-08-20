@@ -3,6 +3,7 @@ package anti.drop.device.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import anti.drop.device.BaseActivity;
 import anti.drop.device.R;
 import anti.drop.device.adapter.BellAdapter;
+import anti.drop.device.pojo.DeviceBean;
+import anti.drop.device.utils.DBHelper;
 import anti.drop.device.utils.SharedPreferencesUtils;
 
 public class ChooseBellActivity extends BaseActivity{
@@ -24,6 +27,7 @@ public class ChooseBellActivity extends BaseActivity{
 	private ListView bellList;//搜索到的设备
 	private List<String> musicData;
 	private BellAdapter mAdapter;
+	private DBHelper mdbHelper;
 	
 	
 	@Override
@@ -39,6 +43,9 @@ public class ChooseBellActivity extends BaseActivity{
 		backView = (ImageView)findViewById(R.id.title_back);
 		titleView = (TextView)findViewById(R.id.title_text);
 		bellList = (ListView)findViewById(R.id.choose_device_listview);
+		
+		mdbHelper = DBHelper.getInstance(this);
+		mdbHelper.open();
 		
 		titleView.setText("选择铃声");
 		musicData = new ArrayList<String>();
@@ -62,8 +69,14 @@ public class ChooseBellActivity extends BaseActivity{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				SharedPreferencesUtils.getInstanse(ChooseBellActivity.this)
-				.setMusicName(musicData.get(arg2));
+				String address = SharedPreferencesUtils.getInstanse(ChooseBellActivity.this).getAddress();
+				DeviceBean device = new DeviceBean();
+				device.name = SharedPreferencesUtils.getInstanse(ChooseBellActivity.this).getDeviceName();
+				device.address = address;
+				device.status = BluetoothDevice.BOND_BONDED;
+				device.bell = musicData.get(arg2);
+				mdbHelper.alter(device, musicData.get(arg2));
+				SharedPreferencesUtils.getInstanse(ChooseBellActivity.this).setMusicName(musicData.get(arg2));
 				ChooseBellActivity.this.finish();
 			}
 		});

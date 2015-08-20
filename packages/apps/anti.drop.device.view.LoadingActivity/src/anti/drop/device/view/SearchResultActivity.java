@@ -14,23 +14,26 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import anti.drop.device.BaseActivity;
 import anti.drop.device.R;
 import anti.drop.device.adapter.SearchResultAdapter;
 import anti.drop.device.pojo.DeviceBean;
+import anti.drop.device.utils.DBHelper;
 
-public class SearchResultActivity extends BaseActivity{
+public class SearchResultActivity extends BaseActivity implements OnClickListener{
 
 	private ImageView backView;
 	private TextView titleView;
 	private ListView resultList;
+	private ProgressBar mPorgress;
 	
 	private SearchResultAdapter mAdapter;
 	private List<DeviceBean> listData;
-	
 	public BluetoothAdapter mBluetoothAdapter;
 	public BluetoothManager bluetoothManager;
+	private DBHelper mDBHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +71,20 @@ public class SearchResultActivity extends BaseActivity{
 		backView = (ImageView)findViewById(R.id.title_back);
 		titleView = (TextView)findViewById(R.id.title_text);
 		resultList = (ListView)findViewById(R.id.search_result_listview);
-		
+		mPorgress = (ProgressBar)findViewById(R.id.title_progress);
 	}
 	
 	private void setListener(){
-		
-		backView.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
-		
+		backView.setOnClickListener(this);
 	}
 	
 	private void initView(){
 		bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
+		mDBHelper = DBHelper.getInstance(this);
+		mDBHelper.open();
 		findViewById();
+		mPorgress.setVisibility(View.VISIBLE);
 		titleView.setText("搜索结果");
 		listData = new ArrayList<DeviceBean>();
 		mAdapter = new SearchResultAdapter(this,listData);
@@ -98,20 +96,23 @@ public class SearchResultActivity extends BaseActivity{
 	private Handler mHandler = new Handler();
 	boolean mScanning = false;
 	private void startScan(boolean enable){
+		
 		if (enable){
 			mHandler.postDelayed(new Runnable() {
-				
 				@Override
 				public void run() {
 					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					mPorgress.setVisibility(View.GONE);
 				}
 			},10000);
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
+			mPorgress.setVisibility(View.VISIBLE);
 		}else{
 			mScanning = false;
 			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			mPorgress.setVisibility(View.GONE);
 		}
 	}
 	
@@ -124,33 +125,27 @@ public class SearchResultActivity extends BaseActivity{
 				@Override
 				public void run() {
 					DeviceBean bean = new DeviceBean();
+					
 					bean.name = device.getName();
 					bean.address = device.getAddress();
 					bean.status = device.getBondState();
-					bean.rssi = rssi;
 					
-					if(!contrast(listData,device)){
+					if(!listData.contains(device)){
 						listData.add(bean);
 					}
 					
 					mAdapter.setListData(listData);
 					mAdapter.notifyDataSetChanged();
-					
 				}
 			});
 		}
 	};
-	
-	//查询某个列表中是否包含该设备信息,有则返回true,没有则返回false
-	private boolean contrast(List<DeviceBean> list,BluetoothDevice device){
-		String address = device.getAddress();
-		boolean result = false;
-		for(int i=0;i<list.size();i++){
-			if(address.equals(list.get(i).getAddress())){
-				result =  true;
-			}
+
+	@Override
+	public void onClick(View v) {
+		if(v==backView){
+			finish();
 		}
-		return result;
 	}
 	
 }

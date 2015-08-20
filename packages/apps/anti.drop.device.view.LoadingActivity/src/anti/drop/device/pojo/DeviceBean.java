@@ -6,25 +6,17 @@ public class DeviceBean {
 	public String address;// 蓝牙地址
 	public String name;// 蓝牙名称
 	public int status;// 连接状态[12 (0x0000000c):已经匹配，11 (0x0000000b):匹配正在进行中;10
-						// (0x0000000a):未被匹配]
-	public int rssi;
+	public String bell = "铃声1";// 默认铃声
 
+	// (0x0000000a):未被匹配]
 	public DeviceBean() {
 	}
 
-	public DeviceBean(String address, String name, int status, int rssi) {
+	public DeviceBean(String address, String name, int status,String bell) {
 		this.address = address;
 		this.name = name;
 		this.status = status;
-		this.rssi = rssi;
-	}
-
-	public int getRssi() {
-		return rssi;
-	}
-
-	public void setRssi(int rssi) {
-		this.rssi = rssi;
+		this.bell = bell;
 	}
 
 	public int get_id() {
@@ -57,6 +49,14 @@ public class DeviceBean {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getBell() {
+		return bell;
+	}
+
+	public void setBell(String bell) {
+		this.bell = bell;
 	}
 
 }

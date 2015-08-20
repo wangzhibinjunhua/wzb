@@ -20,16 +20,5 @@
             android:dividerHeight="0.6dip"
             android:listSelector="@drawable/list_selector"
             ></ListView>
-        
-        <!-- <TextView
-            android:id="@+id/search_result_tip"
-            android:layout_width="match_parent"
-            android:layout_height="0.0dip"
-            android:layout_weight="1"
-            android:text="没有搜索到设备"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="16.0sp"
-            ></TextView> -->
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package anti.drop.device.view;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -9,6 +10,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -63,7 +65,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 	private int bellDistance = 2;
 	private boolean callBell;
     Thread mRssiThread;
-	
+	private boolean isFirst = true;
 	
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
@@ -88,8 +90,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 			case 0000:
 				mDistance = calculateDistance(mRssi);
 				bellDistance = SharedPreferencesUtils.getInstanse(DetailActivity.this).getBellDistance();//获取默认的报警距离
-				Log.d("wzb","mRssi="+mRssi+" bellDistance="+bellDistance+" callBell="+callBell+"mDistance="+mDistance);
-				if(callBell&&BluetoothLeClass.isconnectedSuccess){
+				if(callBell){
 					if(mDistance>bellDistance ||mDistance==bellDistance){
 						LocationUtil locationU = new LocationUtil(DetailActivity.this);
 						SharedPreferencesUtils.getInstanse(DetailActivity.this)
@@ -97,6 +98,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 						SharedPreferencesUtils.getInstanse(DetailActivity.this)
 						.setDeviceLatitude(String.valueOf(locationU.getmLatitude()));
 						ring();
+						sendData("a3");
 					}
 				}
 				break;
@@ -142,8 +144,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//name = SharedPreferencesUtils.getInstanse(this).getDeviceName();
-		name = SharedPreferencesUtils.getInstanse(this).getDeviceNamefromAddr(address);
+		name = SharedPreferencesUtils.getInstanse(this).getDeviceName();
 		deviceName.setText(name);
 		mRssiThread=new Thread(rssiThread);
 		flag=true;
@@ -174,14 +175,16 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 			distance = 0.5f;
 		}else if(rssi<=-72&&rssi>-80){
 			distance = 1.0f;
-		}else if(rssi<=-80&&rssi>-80){
-			distance = 3.0f;
 		}else if(rssi<=-80&&rssi>-85){
+			distance = 3.0f;
+		}else if(rssi<=-85&&rssi>-87){
 			distance = 5.0f;
-		}else if(rssi<=-85&&rssi>-90){
+		}else if(rssi<=-87&&rssi>-90){
 			distance = 7.0f;
-		}else if(rssi<=-90&&rssi>-95){
+		}else if(rssi<=-90&&rssi>-93){
 			distance = 10.0f;
+		}else if(rssi<=-93&&rssi>-95){
+			distance = 12.0f;
 		}else if(rssi<=-95&&rssi>-100){
 			distance = 20.0f;
 		}
@@ -240,7 +243,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				//停止滑动时，记录下报警距离
 				SharedPreferencesUtils.getInstanse(DetailActivity.this)
-				.setBellDistance(seekBar.getProgress());
+				.setBellDistance(seekBar.getProgress()+2);
 			}
 			
 		});
@@ -259,6 +262,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 		flag = true;
 		callBell = SharedPreferencesUtils.getInstanse(this).getIsCloseCallBell();
 		setListener();
+		createDialog();
 	}
 
 	@Override
@@ -269,7 +273,6 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 			finish();
 			break;
 		case R.id.detail_bell:
-			sendData("A1");
 			sendData("A3");
 			break;
 		case R.id.take_layout:
@@ -452,7 +455,8 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 		if(player!=null&&player.isPlaying()){
 			player.stop();
 		}
-		String name = SharedPreferencesUtils.getInstanse(this).getBellName();
+		
+		String name = SharedPreferencesUtils.getInstanse(this).getMusicName();
 		if(name.equals("铃声1")){
 			player = MediaPlayer.create(this, R.raw.bell_1);
 		}else if(name.equals("铃声2")){
@@ -463,5 +467,32 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 			player = MediaPlayer.create(this, R.raw.bell_1);
 		}
 		player.start();
+		showDialog();
 	}
+	
+	AlertDialog dialog;
+	private AlertDialog createDialog(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("防丢小助手");
+		builder.setMessage("你的设备已经离开了安全距离");
+		builder.setPositiveButton("我知道了", new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+		dialog = builder.create();
+		return dialog;
+	}
+	
+	private void showDialog(){
+		if(isFirst){
+			if(dialog!=null&&!dialog.isShowing()){
+				dialog.show();
+			}
+			isFirst = false;
+		}
+	}
+	
 }

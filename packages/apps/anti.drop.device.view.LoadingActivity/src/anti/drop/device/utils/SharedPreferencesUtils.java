@@ -3,7 +3,6 @@ package anti.drop.device.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class SharedPreferencesUtils {
 
@@ -199,26 +198,26 @@ public class SharedPreferencesUtils {
 		return isEnter;
 	}
 	
-	public void setDeviceNamefromAddr(String addr,String name){
-		Editor editor = mSharedPreferences.edit();
-		editor.putString(addr, name);
-		editor.commit();
-	}
-	
-	public String getDeviceNamefromAddr(String addr){
-		String name = mSharedPreferences.getString(addr, "AX V01");
-		return name;
-	}
-	
-	public void set_modify_name(String name){
-		Editor editor = mSharedPreferences.edit();
-		editor.putString("00000", name);
-		editor.commit();
-	}
-	
-	public String get_modify_name(){
-		String name = mSharedPreferences.getString("00000","·À¶ªÆ÷");
-		return name;
-	}
+//	public void setDeviceNamefromAddr(String addr,String name){
+//		Editor editor = mSharedPreferences.edit();
+//		editor.putString(addr, name);
+//		editor.commit();
+//	}
+//	
+//	public String getDeviceNamefromAddr(String addr){
+//		String name = mSharedPreferences.getString(addr, "AX V01");
+//		return name;
+//	}
+//	
+//	public void set_modify_name(String name){
+//		Editor editor = mSharedPreferences.edit();
+//		editor.putString("00000", name);
+//		editor.commit();
+//	}
+//	
+//	public String get_modify_name(){
+//		String name = mSharedPreferences.getString("00000","·À¶ªÆ÷");
+//		return name;
+//	}
 	
 }

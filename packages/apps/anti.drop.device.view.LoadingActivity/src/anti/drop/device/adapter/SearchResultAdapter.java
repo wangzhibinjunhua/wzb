@@ -2,8 +2,9 @@ package anti.drop.device.adapter;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
+import android.bluetooth.BluetoothDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import anti.drop.device.pojo.DeviceBean;
 import anti.drop.device.utils.BluetoothLeClass;
 import anti.drop.device.utils.DBHelper;
 
+@SuppressLint({ "ViewHolder", "InflateParams" })
 public class SearchResultAdapter extends BaseAdapter {
 
 	private Activity mContext;
@@ -93,37 +95,19 @@ public class SearchResultAdapter extends BaseAdapter {
 					DeviceBean bean = new DeviceBean();
 					bean.name = listData.get(position).getName();
 					bean.address = listData.get(position).getAddress();
-					bean.status = 0x0000000c;
-					bean.rssi = listData.get(position).getRssi();
-					
-					boolean iscontrast = contrast(mDBData,listData.get(position));
-					if(iscontrast){
+					bean.status = BluetoothDevice.BOND_BONDED;
+					bean.bell = "铃声1";
+					if(mDBData.contains(listData.get(position))){
 						//有，更改状态就行了。
-						Log.d("wzb","11111111111111111111111111111aa");
-						mDB.alter(bean, 0x0000000c);
+						mDB.alter(bean, BluetoothDevice.BOND_BONDED);
 					}else{
 						//没有，将该数据插入数据库
-						Log.d("wzb","222222222222bb");
 						mDB.insertDevice(bean);
 					}
 					mContext.finish();
 				}
 			}
 		});
-
 		return convertView;
 	}
-	
-	//判断该条数据在数据库中有没有，有则返回true,没有则返回false.
-	private boolean contrast(List<DeviceBean> list,DeviceBean device){
-		String address = device.getAddress();
-		boolean result = false;
-		for(int i=0;i<list.size();i++){
-			if(address.equals(list.get(i).getAddress())){
-				result =  true;
-			}
-		}
-		return result;
-	}
-
 }
