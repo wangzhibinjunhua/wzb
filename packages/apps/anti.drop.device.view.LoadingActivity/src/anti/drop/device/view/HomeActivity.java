@@ -3,7 +3,10 @@ package anti.drop.device.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.anim;
+import android.R.integer;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -12,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,16 +58,19 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 	private BluetoothLeClass mBLE;
 	private BaseApplication mApp;
 	private static HomeActivity instance;
-	
+	BluetoothLeClass ble;
 	private long firstTime = 0;
 	private Intent mIntent = null;
 	static String state_addr;
 	private int connecNum = 0;//最大连接数不能超过4个
+	ProgressDialog  pd;
+	int i;
 	
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg){
 			switch(msg.what){
 			case CONNECTED_LISTENER:
+				Log.d("wzb","wzb connected");
 				if(null!=mDBData&&mDBData.size()>0){
 					for(int i=0;i<mDBData.size();i++){
 						if(mDBData.get(i).getAddress().equals(state_addr)){
@@ -76,10 +83,13 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 				}
 				break;
 			case DISCONNECTED_LISTENER:
+				Log.d("wzb","wzb disconnected");
 				if(null!=mDBData&&mDBData.size()>0){
 					for(int i=0;i<mDBData.size();i++){
 						if(mDBData.get(i).getAddress().equals(state_addr)){
 							mDBHelper.alter(mDBData.get(i), 0x00000a);
+							//add by wzb 20150823
+							boolean issuccess = mBLE.connect(state_addr);
 						}
 					}
 					mDBData = mDBHelper.query();
@@ -90,15 +100,27 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 			case CONNECTED_ALL:
 				//进入应用，连接数据库中所有设备,当连接数量大于4时，停止连接.
 				if(mDBData!=null&&mDBData.size()>0){
+					
 					for(int i=0;i<mDBData.size();i++){
 						if(connecNum<4){
+							
+						
+						
+							
 							boolean issuccess = mBLE.connect(mDBData.get(i).getAddress());
+							Log.d("www","="+mBLE.getBluetoothGatt()+"addr="+mDBData.get(i).getAddress());
+							mApp.set_gatt(mBLE.getBluetoothGatt(), i);
+							android.os.SystemClock.sleep(8000);
 							if(issuccess){
+								
 								connecNum++;
 								mDBHelper.alter(mDBData.get(i), BluetoothDevice.BOND_BONDED);
+								
 							}
+			
 						}
 					}
+					
 					mDBData = mDBHelper.query();
 					mAdapter.setDeveiceData(mDBData);	
 					mAdapter.notifyDataSetChanged();
@@ -118,6 +140,10 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_page);
+		pd = new ProgressDialog(HomeActivity.this);
+		pd.setTitle("正在匹配所有设备");
+		pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		pd.setMessage("请耐心等待~~");
 		initView();
 	}
 	
@@ -127,6 +153,7 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 		titleView = (TextView) findViewById(R.id.title_text);
 		searchRadio = (ImageView) findViewById(R.id.home_page_search_btn);
 		deviceList = (SlideDeleteListView) findViewById(R.id.home_page_device_list);
+		
 	}
 	
 	private void initView() {
@@ -181,6 +208,7 @@ public class HomeActivity extends BaseActivity implements DelButtonClickListener
 				SharedPreferencesUtils.getInstanse(HomeActivity.this).setDeviceName(mDBData.get(arg2).getName());
 				SharedPreferencesUtils.getInstanse(HomeActivity.this).setMusicName(mDBData.get(arg2).getBell());
 				Intent intent = new Intent(HomeActivity.this,DetailActivity.class);
+				intent.putExtra("deviceid", arg2);
 				startActivity(intent);
 			}
 		});

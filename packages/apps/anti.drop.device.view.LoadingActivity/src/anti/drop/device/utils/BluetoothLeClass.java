@@ -16,10 +16,11 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
+import anti.drop.device.BaseApplication;
 import anti.drop.device.R;
 
 /**
- * AUTHER WZB<wangzhibin_x@foxmail.com> 2015-7-28下午02:03:38
+ * AUTHER WZB<wangzhibin_x@foxmail.com> 2015-7-28??02:03:38
  */
 public class BluetoothLeClass {
 
@@ -31,6 +32,7 @@ public class BluetoothLeClass {
 	private String mBluetoothDeviceAddress;
 	private BluetoothGatt mBluetoothGatt;
 	public boolean isconnectedSuccess = false;
+	private BaseApplication mApp;
 
 	private BluetoothGattCharacteristic ff[] = new BluetoothGattCharacteristic[7];
 
@@ -117,8 +119,9 @@ public class BluetoothLeClass {
 				// Attempts to discover services after successful connection.
 				Log.i(TAG, "Attempting to start service discovery:"
 						+ mBluetoothGatt.discoverServices());
+				
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-				ring();//连接断开报警
+				ring();//??????
 				if (mOnDisconnectListener != null)
 					mOnDisconnectListener.onDisconnect(gatt,address);
 				isconnectedSuccess = false;
@@ -133,18 +136,23 @@ public class BluetoothLeClass {
 					  }
 				 }
 			}else{
-				ring();//连接断开报警
+				ring();//??????
 			}
 		}
 
 		@Override
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+			displayGattServices(getSupportedGattServices());
 			if (status == BluetoothGatt.GATT_SUCCESS
 					&& mOnServiceDiscoverListener != null) {
 				mOnServiceDiscoverListener.onServiceDiscover(gatt);
+				//displayGattServices(getSupportedGattServices());
 			} else {
 				Log.w(TAG, "onServicesDiscovered received: " + status);
 			}
+			boolean ret = setCharacteristicNotification(
+				getBluetoothGattCharacteristic(0), true);
+			Log.d("wzb","ble class read data "+ret);
 		}
 
 		@Override
@@ -194,10 +202,10 @@ public class BluetoothLeClass {
 		public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
 			super.onReadRemoteRssi(gatt, rssi, status);
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				// 获取到RSSI， RSSI 正常情况下 是 一个 负值，如 -33 ； 这个值的绝对值越小，代表设备离手机越近
-				// 通过mBluetoothGatt.readRemoteRssi();来获取
+				// ???RSSI, RSSI ????? ? ?? ??,? -33 ; ?????????,?????????
+				// ??mBluetoothGatt.readRemoteRssi();???
 				Log.d("wzb", "aaa rssi=" + rssi);
-				// 将回调的RSSI值赋值
+				// ????RSSI???
 				BLERSSI = rssi;
 			}
 
@@ -238,11 +246,11 @@ public class BluetoothLeClass {
 			player.stop();
 		}
 		String name = SharedPreferencesUtils.getInstanse(mContext).getMusicName();
-		if(name.equals("铃声1")){
+		if(name.equals("??1")){
 			player = MediaPlayer.create(mContext, R.raw.bell_1);
-		}else if(name.equals("铃声2")){
+		}else if(name.equals("??2")){
 			player = MediaPlayer.create(mContext, R.raw.bell_2);
-		}else if(name.equals("铃声3")){
+		}else if(name.equals("??3")){
 			player = MediaPlayer.create(mContext, R.raw.bell_3);
 		}else{
 			player = MediaPlayer.create(mContext, R.raw.bell_1);
@@ -319,13 +327,61 @@ public class BluetoothLeClass {
 		// autoConnect
 		// parameter to false.
 		mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
+		
+		//add by wzb 20150823
+		
+		
 		Log.d(TAG, "Trying to create a new connection.");
 		mBluetoothDeviceAddress = address;
 		return isconnectedSuccess;
 	}
+//	
+//	public boolean connect(final String address ,int num) {
+//		if (mBluetoothAdapter == null || address == null) {
+//			Log.w(TAG,
+//					"BluetoothAdapter not initialized or unspecified address.");
+//			isconnectedSuccess = false;
+//		}
+//
+//		// Previously connected device. Try to reconnect.
+//		if (mBluetoothDeviceAddress != null
+//				&& address.equals(mBluetoothDeviceAddress)
+//				&& mBluetoothGatt != null) {
+//			Log.d(TAG,
+//					"Trying to use an existing mBluetoothGatt for connection.");
+//			if (mBluetoothGatt.connect()) {
+//				isconnectedSuccess = true;
+//			} else {
+//				isconnectedSuccess = false;
+//			}
+//		}
+//
+//		final BluetoothDevice device = mBluetoothAdapter
+//				.getRemoteDevice(address);
+//		if (device == null) {
+//			Log.w(TAG, "Device not found.  Unable to connect.");
+//			isconnectedSuccess = false;
+//		}
+//		// We want to directly connect to the device, so we are setting the
+//		// autoConnect
+//		// parameter to false.
+//		mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
+//		
+//		//add by wzb 20150823
+//		
+//		Log.d(TAG, "Trying to create a new connection.");
+//		mBluetoothDeviceAddress = address;
+//		return isconnectedSuccess;
+//	}
+	
+	
 
 	public BluetoothGatt getBluetoothGatt() {
 		return mBluetoothGatt;
+	}
+	
+	public void setBluetoothGatt(BluetoothGatt l) {
+		mBluetoothGatt=l;
 	}
 
 	/**
@@ -425,13 +481,13 @@ public class BluetoothLeClass {
 		return mBluetoothGatt.getServices();
 	}
 
-	// 获取已经得到的RSSI值
+	// ???????RSSI?
 	public static int getBLERSSI() {
 		return BLERSSI;
 	}
 
-	// 是都能读取到已连接设备的RSSI值
-	// 执行该方法一次，获得蓝牙回调onReadRemoteRssi（）一次
+	// ????????????RSSI?
+	// ???????,??????onReadRemoteRssi()??
 	/**
 	 * Read the RSSI for a connected remote device.
 	 * */
@@ -451,6 +507,88 @@ public class BluetoothLeClass {
 			int id) {
 		ff[id] = b;
 
+	}
+	
+	private void displayGattServices(List<BluetoothGattService> gattServices) {
+		if (gattServices == null)
+			return;
+
+		for (BluetoothGattService gattService : gattServices) {
+			// -----Service?????-----//
+			int type = gattService.getType();
+			Log.e("wzb",
+					"-->service type:" + CommunicationUtil.getServiceType(type));
+			Log.e("wzb", "-->includedServices size:"
+					+ gattService.getIncludedServices().size());
+			Log.e("wzb", "-->service uuid:" + gattService.getUuid());
+
+			// -----Characteristics?????-----//
+			List<BluetoothGattCharacteristic> gattCharacteristics = gattService
+					.getCharacteristics();
+			for (final BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+				Log.e("wzb", "---->char uuid:"
+						+ gattCharacteristic.getUuid().toString());
+
+				int permission = gattCharacteristic.getPermissions();
+				Log.e("wzb",
+						"---->char permission:"
+								+ CommunicationUtil
+										.getCharPermission(permission));
+
+				int property = gattCharacteristic.getProperties();
+				Log.e("wzb",
+						"---->char property:"
+								+ CommunicationUtil.getCharPropertie(property));
+
+				byte[] data = gattCharacteristic.getValue();
+				if (data != null && data.length > 0) {
+					Log.e("wzb", "---->char value:" + new String(data));
+				}
+
+				// ff1 --ff7 ?? ff[0]-ff[6]
+				if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff2-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 1);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff1-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 0);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff3-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 2);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff4-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 3);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff5-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 4);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff6-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 5);
+				} else if (gattCharacteristic.getUuid().toString()
+						.equals("0000fff7-0000-1000-8000-00805f9b34fb")) {
+					setBluetoothGattCharacteristic(gattCharacteristic, 6);
+				}
+
+				// -----Descriptors?????-----//
+				List<BluetoothGattDescriptor> gattDescriptors = gattCharacteristic
+						.getDescriptors();
+				for (BluetoothGattDescriptor gattDescriptor : gattDescriptors) {
+					Log.e("wzb",
+							"-------->desc uuid:" + gattDescriptor.getUuid());
+					int descPermission = gattDescriptor.getPermissions();
+					Log.e("wzb",
+							"-------->desc permission:"
+									+ CommunicationUtil
+											.getDescPermission(descPermission));
+
+					byte[] desData = gattDescriptor.getValue();
+					if (desData != null && desData.length > 0) {
+						Log.e("wzb", "-------->desc value:"
+								+ new String(desData));
+					}
+				}
+			}
+		}
 	}
 
 }

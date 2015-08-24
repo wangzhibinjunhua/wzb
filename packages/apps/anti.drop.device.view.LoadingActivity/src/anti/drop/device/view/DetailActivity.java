@@ -1,7 +1,9 @@
 package anti.drop.device.view;
 
 import java.util.List;
+import java.util.UUID;
 
+import android.R.integer;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
@@ -134,6 +136,12 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 		if (!mBLE.initialize()) {
 			finish();
 		}
+		//add by wzb
+		Intent data=getIntent();
+		int device_id=data.getExtras().getInt("deviceid");
+		Log.d("www","deviceid="+device_id+"gatt="+app.get_gatt(device_id));
+		mBLE.setBluetoothGatt(app.get_gatt(device_id));
+		readData();
 		initView();
 		// 发现BLE终端的Service时回调
 		mBLE.setOnServiceDiscoverListener(mOnServiceDiscover);
@@ -258,7 +266,7 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 		titleView.setText("详情");
 		mIntent = getIntent();
 		address = SharedPreferencesUtils.getInstanse(this).getAddress();
-		mBLE.connect(address);
+		//mBLE.connect(address);
 		flag = true;
 		callBell = SharedPreferencesUtils.getInstanse(this).getIsCloseCallBell();
 		setListener();
@@ -301,16 +309,42 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void readData() {
-		boolean ret = mBLE.setCharacteristicNotification(
-				mBLE.getBluetoothGattCharacteristic(0), true);
+		//boolean ret = mBLE.setCharacteristicNotification(
+			//	mBLE.getBluetoothGattCharacteristic(0), true);
+		//add by wzb 20150823
+		BluetoothGattService readService=mBLE.getBluetoothGatt().getService(UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb"));
+		if(readService!=null){
+			BluetoothGattCharacteristic read_bgc=readService.getCharacteristic(UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb"));
+			boolean ret= mBLE.setCharacteristicNotification(read_bgc,true);
+			Log.d("www","readdata="+ret);
+		}
+		
+	
 	}
 
 	private void sendData(String data) {
-		if (mBLE.getBluetoothGattCharacteristic(1) != null) {
+//		 if (mBLE.getBluetoothGattCharacteristic(1) != null) {
+//		 int data_16 = Integer.parseInt(data, 16);
+//		 mBLE.getBluetoothGattCharacteristic(1).setValue(
+//		 new byte[] { (byte) data_16 });
+//		 mBLE.writeCharacteristic(mBLE.getBluetoothGattCharacteristic(1));
+//		 }
+		
+		
+		if (mBLE.getSupportedGattServices() != null) {
+			BluetoothGattService sendService = mBLE
+					.getBluetoothGatt()
+					.getService(
+							UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb"));
 			int data_16 = Integer.parseInt(data, 16);
-			mBLE.getBluetoothGattCharacteristic(1).setValue(
-					new byte[] { (byte) data_16 });
-			mBLE.writeCharacteristic(mBLE.getBluetoothGattCharacteristic(1));
+			if (sendService != null) {
+				BluetoothGattCharacteristic bgc = sendService
+						.getCharacteristic(UUID
+								.fromString("0000fff2-0000-1000-8000-00805f9b34fb"));
+				bgc.setValue(new byte[] { (byte) data_16 });
+				mBLE.getBluetoothGatt().writeCharacteristic(bgc);
+				Log.d("wzb", "sendService=" + sendService + "bgc=" + bgc);
+			}
 		}
 	}
 
@@ -403,8 +437,8 @@ public class DetailActivity extends BaseActivity implements OnClickListener {
 
 		@Override
 		public void onServiceDiscover(BluetoothGatt gatt) {
-			displayGattServices(mBLE.getSupportedGattServices());
-			readData();
+			//displayGattServices(mBLE.getSupportedGattServices());
+			//readData();
 		}
 	};
 

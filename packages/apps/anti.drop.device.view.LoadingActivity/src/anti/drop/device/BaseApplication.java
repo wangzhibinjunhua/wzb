@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import android.R.integer;
 import android.app.Application;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -28,6 +30,7 @@ public class BaseApplication extends Application{
 	public static BaseApplication instance;
 	
 	public BluetoothLeClass ble;
+	public BluetoothGatt gatt[]=new BluetoothGatt[100];
 	
 	@Override
 	public void onCreate() {
@@ -61,6 +64,20 @@ public class BaseApplication extends Application{
 	
 	public BluetoothLeClass get_ble(){
 		return ble;
+	}
+	
+	public void set_gatt(BluetoothGatt bluetoothGatt,int arg0){
+		if(arg0<100){
+			gatt[arg0]=bluetoothGatt;
+		}
+		Log.d("www","app set i="+arg0+"gatt ="+gatt[arg0]);
+	}
+	public BluetoothGatt get_gatt(int i){
+		if(i<100){
+			Log.d("www","app get i="+i+"gatt="+gatt[i]);
+		return gatt[i];
+		}
+		return null;
 	}
 	/**
 	 * ¼ÓÔØÅäÖÃÎÄ¼þ
