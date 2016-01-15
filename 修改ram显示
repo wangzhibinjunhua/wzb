@@ -1,0 +1,5 @@
+kernel/fs/proc/meminfo.c
+直接修改proc/meminfo
+
+adb shell
+cat proc/meminfo 查看
