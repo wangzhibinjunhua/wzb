@@ -1,0 +1,34 @@
+your device isn't compatible with this version
+
+因项目需求修改了dpi，结果在play store 中出现部分app 无法下载，提示your device isn't compatible with this version
+
+
+diff --git a/alps/frameworks/base/core/java/android/content/res/Resources.java b/alps/frameworks/base/core/java/android/content/res/Resources.java
+old mode 100644 (file)
+new mode 100755 (executable)
+index ae222d9..1a40651
+--- a/alps/frameworks/base/core/java/android/content/res/Resources.java
++++ b/alps/frameworks/base/core/java/android/content/res/Resources.java
+@@ -2207,6 +2207,21 @@ public class Resources {
+     public DisplayMetrics getDisplayMetrics() {
+         if (DEBUG_CONFIG) Slog.v(TAG, "Returning DisplayMetrics: " + mMetrics.widthPixels
+                 + "x" + mMetrics.heightPixels + " " + mMetrics.density);
++               //add by wzb for google play 20160112
++               //density=1.3312501 densitydpi=213
++               if(SystemProperties.get("ro.custom_ngm_density213").equals("1")){
++                               mMetrics.densityDpi=213;
++                               mMetrics.density=1.3312501f;
++                               mMetrics.scaledDensity=1.3312501f;
++                               mMetrics.xdpi=213.0f;
++                               mMetrics.ydpi=213.0f;
++                               mMetrics.noncompatDensity=1.3312501f;
++                               mMetrics.noncompatDensityDpi=213;
++                               mMetrics.noncompatXdpi=213.0f;
++                               mMetrics.noncompatYdpi=213.0f;
++                               mMetrics.noncompatScaledDensity=1.3312501f;
++               }
++               //end
+         return mMetrics;
+     }
+     
+     在获取dpi的 api中修改为需要的值，build.prop依然配成GMS要求的值才行。
